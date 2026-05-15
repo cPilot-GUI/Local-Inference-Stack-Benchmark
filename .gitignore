@@ -1,0 +1,32 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+
+# Node
+node_modules/
+site/dist/
+site/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local benchmark output
+results/
+.bench-loop/
+*.log
+
+# Screenshots / local QA artifacts
+benchloop-*.png
+playwright-*.png
+
+# TypeScript
+*.tsbuildinfo

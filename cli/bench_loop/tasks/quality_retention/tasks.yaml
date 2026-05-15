@@ -1,0 +1,68 @@
+tasks:
+  - id: qr-chinese-summary-001
+    suite: quality_retention
+    title: Chinese local inference comprehension
+    messages:
+      - role: user
+        content: "请用一句中文概括：本地推理栈评测关注模型、量化、推理引擎、硬件和运行配置的组合效果。答案必须包含“模型”“引擎”“硬件”。"
+    config:
+      max_tokens: 96
+      temperature: 0.0
+    validation:
+      kind: contains_all
+      category: chinese
+      contains: ["模型", "引擎", "硬件"]
+  - id: qr-format-json-001
+    suite: quality_retention
+    title: Strict JSON format following
+    messages:
+      - role: user
+        content: "Return only JSON with fields status=ok and benchmark=local-inference."
+    config:
+      max_tokens: 96
+      temperature: 0.0
+    validation:
+      kind: json_fields
+      category: format
+      fields:
+        status: ok
+        benchmark: local-inference
+  - id: qr-code-001
+    suite: quality_retention
+    title: Tiny code task
+    messages:
+      - role: user
+        content: "Write a Python function add_one(x) that returns x + 1. Return only code."
+    config:
+      max_tokens: 128
+      temperature: 0.0
+    validation:
+      kind: contains_all
+      category: code
+      contains: ["def add_one", "return", "+ 1"]
+  - id: qr-math-001
+    suite: quality_retention
+    title: Small deterministic math
+    messages:
+      - role: user
+        content: "A local benchmark ran 10 tasks and passed 8. What is the pass rate percentage? Answer with the number and percent sign."
+    config:
+      max_tokens: 32
+      temperature: 0.0
+    validation:
+      kind: regex
+      category: math
+      pattern: "80\\s*%"
+  - id: qr-long-context-retrieval-001
+    suite: quality_retention
+    title: Long-context retrieval sanity check
+    messages:
+      - role: user
+        content: "Context: alpha=Ollama, beta=cPilot, gamma=MLX. Which engine is assigned to beta? Answer with one word."
+    config:
+      max_tokens: 32
+      temperature: 0.0
+    validation:
+      kind: contains_all
+      category: retrieval
+      contains: ["cPilot"]

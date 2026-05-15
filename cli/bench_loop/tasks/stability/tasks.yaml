@@ -1,0 +1,14 @@
+tasks:
+  - id: stability-10run-001
+    suite: stability
+    title: Ten-run API success loop
+    messages:
+      - role: user
+        content: "Reply with exactly: stable"
+    config:
+      attempts: 10
+      max_tokens: 16
+      temperature: 0.0
+      hang_ms: 120000
+    metadata:
+      verifier_type: repeated_success

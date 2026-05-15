@@ -1,0 +1,24 @@
+tasks:
+  - id: memory-load-001
+    suite: memory
+    title: Model load and short-generation memory
+    messages:
+      - role: user
+        content: "Reply with exactly: memory probe ok"
+    config:
+      max_tokens: 32
+      temperature: 0.0
+    metadata:
+      verifier_type: runtime_metrics
+  - id: memory-kv-4k-001
+    suite: memory
+    title: KV cache growth under 4K prompt
+    messages:
+      - role: user
+        content: "Summarize why local inference memory efficiency matters in one sentence."
+    config:
+      max_tokens: 96
+      temperature: 0.0
+    metadata:
+      context_length: 4096
+      verifier_type: runtime_metrics
