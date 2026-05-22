@@ -2,6 +2,16 @@
 
 Find the best way to run open models on local hardware.
 
+## Website Preview
+
+Temporary preview link: https://funny-tires-burn.loca.lt
+
+> Note: this link is powered by a local tunnel for sharing the current preview build. It may change when the tunnel is restarted.
+
+![Local Inference Stack Benchmark homepage](docs/assets/homepage.png)
+
+The homepage presents the benchmark as a full local inference stack leaderboard: model, quantization, engine, hardware, OS, context length, and runtime config are evaluated together. The current visual direction uses a black, white, and purple geek-style interface with high-contrast text, a terminal-inspired benchmark summary, and visible low-memory frontier metrics for local large-model deployment.
+
 This benchmark ranks a complete inference stack:
 
 ```text
