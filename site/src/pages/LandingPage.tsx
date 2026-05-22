@@ -24,7 +24,7 @@ export default function LandingPage() {
     <div className="home-stack">
       <section className="leaderboard-hero home-hero">
         <div>
-          <h1>Find the best way to run open models locally.</h1>
+          <h1>Find the best way to run open models <span className="geek-accent">locally.</span></h1>
           <p>
             Local Inference Stack Benchmark ranks the full local setup: model, quantization,
             engine, hardware, OS, context length, and runtime config. The goal is practical:
@@ -36,14 +36,34 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="stack-summary-panel">
-          <div className="metric-label">Ranking tuple</div>
-          <strong>Model × Quant × Engine × Hardware</strong>
-          <span>Speed, memory, stability, quality retention, and low-memory frontier metrics stay visible for every run.</span>
-          <div className="formula-grid">
-            <span>35% Speed</span>
-            <span>30% Memory</span>
-            <span>20% Stability</span>
-            <span>15% Quality</span>
+          <div className="terminal-bar">
+            <span />
+            <span />
+            <span />
+            <code>local benchmark</code>
+          </div>
+          <pre className="hero-terminal">{`benchmark stack
+model        Qwen3-14B
+engine       llama.cpp
+context      16K
+ttft         410ms
+decode       31.4 tok/s
+peak memory  16.8GB`}</pre>
+          <div className="terminal-metrics">
+            <div>
+              <span>Local Score</span>
+              <strong>88.7</strong>
+            </div>
+            <div>
+              <span>Frontier</span>
+              <strong>2.24B/GB</strong>
+            </div>
+          </div>
+          <div className="signal-trace" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
           </div>
         </div>
       </section>

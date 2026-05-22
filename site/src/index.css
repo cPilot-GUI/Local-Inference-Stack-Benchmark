@@ -3,7 +3,7 @@
  *
  * One source of truth for color, type, spacing, depth, and motion.
  * Tokens are tweaked for a "premium local tool" feel:
- *  - dark UI with green as the single accent (matches the 'loop' icon)
+ *  - dark UI with black, white, and purple as the core palette (matches the 'loop' icon)
  *  - generous spacing and large, confident type
  *  - subtle depth via gradients, borders, and blur — no hard drop shadows
  *  - all animations short (≤ 200ms) so the UI never feels slow
@@ -27,13 +27,13 @@
   --card-hover: #19242a;
   --border: #1f2c2f;
   --border-strong: #2c3d40;
-  --border-hover: #2dd47f;
+  --border-hover: #a995ff;
 
-  /* Accent — emerald */
-  --accent: #2dd47f;
-  --accent-2: #1fb567;
-  --accent-soft: rgba(45, 212, 127, 0.12);
-  --accent-glow: rgba(45, 212, 127, 0.22);
+  /* Accent — purple */
+  --accent: #a995ff;
+  --accent-2: #6f4aff;
+  --accent-soft: rgba(169, 149, 255, 0.12);
+  --accent-glow: rgba(169, 149, 255, 0.22);
   --accent-text: #04140b;
 
   /* Foreground */
@@ -43,7 +43,7 @@
   --text-muted: #5b6c63;
 
   /* Semantic */
-  --green: #2dd47f;
+  --green: #a995ff;
   --yellow: #f6c143;
   --orange: #f97316;
   --red: #ef4444;
@@ -96,17 +96,14 @@ html {
 body {
   font-family: var(--sans);
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
-  background:
-    radial-gradient(900px 600px at 78% -10%, rgba(45, 212, 127, 0.10), transparent 60%),
-    radial-gradient(700px 500px at -10% 110%, rgba(45, 212, 127, 0.05), transparent 60%),
-    linear-gradient(180deg, #05080a 0%, #080d0d 100%);
+  background: #050706;
   background-attachment: fixed;
   color: var(--text);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
 }
 
 #root {
@@ -120,13 +117,13 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--display);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   color: var(--text-strong);
   line-height: 1.2;
 }
 
-h1 { font-size: clamp(2rem, 4vw, 3.4rem); letter-spacing: -0.035em; }
-h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.03em; }
+h1 { font-size: 3.2rem; letter-spacing: 0; }
+h2 { font-size: 2.1rem; letter-spacing: 0; }
 h3 { font-size: 1.25rem; }
 h4 { font-size: 1.05rem; }
 
@@ -139,7 +136,7 @@ a {
   transition: color var(--duration-fast) var(--ease);
 }
 a:hover {
-  color: #5fe09e;
+  color: #ffffff;
   text-decoration: none;
 }
 

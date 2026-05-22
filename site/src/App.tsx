@@ -9,7 +9,6 @@ import MethodologyPage from './pages/MethodologyPage'
 import ModelPage from './pages/ModelPage'
 import SubmitPage from './pages/SubmitPage'
 import LoopLogo from './components/LoopLogo'
-import './App.css'
 
 export default function App() {
   const navigate = useNavigate()
