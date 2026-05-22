@@ -71,12 +71,11 @@ export interface PublicRun {
 }
 
 /**
- * Fetch the public leaderboard. Primary source is the Cloudflare Worker at
- * api.bench-loop.com/leaderboard, which is populated by the local BenchLoop
- * CLI auto-submitting completed runs. Falls back to the static JSON bundled
- * with the site (useful for offline / first-deploy / API outage).
+ * Fetch the public leaderboard. By default the site uses the bundled static
+ * seed data so the benchmark can run before the public ingest API is live.
+ * Set VITE_PUBLIC_LEADERBOARD_API to point at a hosted /leaderboard endpoint.
  */
-const API_URL = 'https://api.bench-loop.com/leaderboard'
+const API_URL = import.meta.env.VITE_PUBLIC_LEADERBOARD_API as string | undefined
 const FALLBACK_URL = '/data/leaderboard.json'
 
 export function useLeaderboard() {
@@ -87,7 +86,7 @@ export function useLeaderboard() {
   useEffect(() => {
     let cancelled = false
     const load = async () => {
-      for (const url of [API_URL, FALLBACK_URL]) {
+      for (const url of [API_URL, FALLBACK_URL].filter(Boolean) as string[]) {
         try {
           const r = await fetch(url, { cache: 'no-cache' })
           if (!r.ok) continue

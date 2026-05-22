@@ -1,6 +1,13 @@
 import type { PublicRun } from '../hooks/useLeaderboard'
 
-export type RankMode = 'overall' | 'speed' | 'memory' | 'stability' | 'quality_retention' | 'tok_per_sec'
+export type RankMode =
+  | 'overall'
+  | 'frontier'
+  | 'speed'
+  | 'memory'
+  | 'stability'
+  | 'quality_retention'
+  | 'tok_per_sec'
 
 export function scoreOf(run: PublicRun, mode: RankMode): number {
   switch (mode) {
@@ -14,6 +21,8 @@ export function scoreOf(run: PublicRun, mode: RankMode): number {
       return run.speed_score
     case 'tok_per_sec':
       return run.generation_tok_per_sec
+    case 'frontier':
+      return lowMemoryFrontierScore(run)
     default:
       return run.overall_score
   }
@@ -94,6 +103,46 @@ export function stackTuple(run: PublicRun): string {
     normalizedHardwareLabel(run),
     contextLabel(run),
   ].join(' × ')
+}
+
+export function parameterBillions(run: PublicRun): number {
+  const raw = run.parameter_size || run.model || ''
+  const match = raw.toLowerCase().match(/(\d+(?:\.\d+)?)\s*b/)
+  return match ? Number(match[1]) : 0
+}
+
+export function peakMemoryGb(run: PublicRun): number {
+  const ram = run.peak_ram_gb || 0
+  const vram = run.peak_vram_gb || 0
+  if (ram && vram) return Math.max(ram, vram)
+  return ram || vram || 0
+}
+
+export function modelDensityLabel(run: PublicRun): string {
+  const density = modelDensity(run)
+  return density ? `${density.toFixed(2)}B/GB` : 'n/a'
+}
+
+export function modelDensity(run: PublicRun): number {
+  const params = parameterBillions(run)
+  const memory = peakMemoryGb(run)
+  if (!params || !memory) return 0
+  return params / memory
+}
+
+export function lowMemoryFrontierScore(run: PublicRun): number {
+  const params = parameterBillions(run)
+  const memory = peakMemoryGb(run)
+  const quality = run.quality_retention_score ?? run.quality_score ?? 0
+  const stability = run.stability_success_rate ?? run.reliability_score ?? 0
+  const speed = run.speed_score || 0
+  if (!params || !memory) {
+    return 0.45 * (run.memory_score || 0) + 0.3 * quality + 0.25 * stability
+  }
+  const density = params / memory
+  const densityScore = Math.max(0, Math.min(100, 42 * Math.log2(1 + density)))
+  const largeModelBonus = Math.max(0, Math.min(12, params / 5))
+  return Math.min(100, 0.38 * densityScore + 0.24 * quality + 0.22 * stability + 0.12 * speed + largeModelBonus)
 }
 
 export function publisherName(run: PublicRun): string {

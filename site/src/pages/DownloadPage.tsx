@@ -15,7 +15,7 @@ const cliInstalls = [
   {
     title: 'From source',
     body: 'Clone the repo and install in editable mode — best if you want to hack on suites.',
-    code: 'git clone https://github.com/outsourc-e/bench-loop\ncd bench-loop\npip install -e .',
+    code: 'git clone https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark\ncd Local-Inference-Stack-Benchmark/cli\npip install -e .',
   },
 ]
 
@@ -32,8 +32,8 @@ const cloneInstalls = [
   },
   {
     title: '3. (Optional) Dev mode',
-    body: 'For hot-reload while hacking on the UI, clone bench-loop-web alongside bench-loop and run with --dev.',
-    code: 'git clone https://github.com/outsourc-e/bench-loop\ngit clone https://github.com/outsourc-e/bench-loop-web\nbenchloop dashboard --dev',
+    body: 'For hot-reload while hacking on the public UI, run the Vite site from this repository.',
+    code: 'git clone https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark\ncd Local-Inference-Stack-Benchmark/site\nnpm install\nnpm run dev',
   },
 ]
 
@@ -41,9 +41,9 @@ export default function DownloadPage() {
   return (
     <div>
       <div className="page-kicker">Download</div>
-      <h1>Install BenchLoop.</h1>
+      <h1>Install the benchmark.</h1>
       <p className="page-subtitle">
-        BenchLoop ships as a CLI for benchmarks and as a local web dashboard for visualization. Pick whichever fits.
+        The stack benchmark ships as a CLI plus a React public site for visualization. Pick whichever fits.
       </p>
 
       <section style={{ marginTop: 32 }}>
@@ -70,8 +70,8 @@ export default function DownloadPage() {
       <section style={{ marginTop: 48 }}>
         <h2>Run the full stack locally</h2>
         <p className="page-subtitle">
-          The CLI is enough on its own. If you also want the local dashboard — Models, Benchmark,
-          Leaderboard, Compare, Chat — clone both repos and start it.
+          The CLI is enough on its own. If you also want to work on the public leaderboard UI, run
+          the Vite site locally from the same repository.
         </p>
         <div className="download-grid">
           {cloneInstalls.map((m) => (
@@ -83,7 +83,7 @@ export default function DownloadPage() {
           ))}
         </div>
         <p style={{ marginTop: 14, fontSize: '0.85rem', color: 'var(--text-dim)' }}>
-          After <code>./start.sh</code>: open <a href="http://127.0.0.1:5180" target="_blank" rel="noreferrer">http://127.0.0.1:5180</a>. The dashboard auto-discovers Ollama, LM Studio, MLX/Osaurus, and any OpenAI-compatible endpoint.
+          After <code>npm run dev</code>: open <a href="http://127.0.0.1:5181" target="_blank" rel="noreferrer">http://127.0.0.1:5181</a>.
         </p>
       </section>
 
@@ -93,12 +93,12 @@ export default function DownloadPage() {
           <div className="download-card">
             <h3>CLI &amp; suites</h3>
             <p>Python package with all benchmark suites, harnesses, scorers, and the orchestrator.</p>
-            <pre>{`github.com/outsourc-e/bench-loop`}</pre>
+            <pre>{`github.com/cPilot-GUI/Local-Inference-Stack-Benchmark`}</pre>
           </div>
           <div className="download-card">
             <h3>Web dashboard</h3>
-            <p>FastAPI backend + React UI. Wraps the CLI with a live dashboard.</p>
-            <pre>{`github.com/outsourc-e/bench-loop-web`}</pre>
+            <p>React/Vite public leaderboard site with static seed data and optional hosted API support.</p>
+            <pre>{`Local-Inference-Stack-Benchmark/site`}</pre>
           </div>
           <div className="download-card">
             <h3>PyPI package</h3>
@@ -124,7 +124,7 @@ export default function DownloadPage() {
           <div className="feature-card card">
             <div className="feature-icon">↗</div>
             <h3>Auto-publish</h3>
-            <p>Every completed benchmark auto-publishes to the public leaderboard at <code>bench-loop.com</code>. Opt out with <code>BENCHLOOP_NO_SUBMIT=1</code>.</p>
+            <p>Completed benchmark runs can publish aggregate data to a public leaderboard API. Opt out with <code>BENCHLOOP_NO_SUBMIT=1</code>.</p>
           </div>
         </div>
       </section>
@@ -132,7 +132,7 @@ export default function DownloadPage() {
       <section style={{ marginTop: 48, marginBottom: 16 }}>
         <h2>Next steps</h2>
         <p className="page-subtitle">
-          New to BenchLoop? Run a fast smoke benchmark, then read the docs to understand scoring and suites.
+          New to the benchmark? Run a fast smoke test, then read the docs to understand scoring and suites.
         </p>
         <div className="landing-actions" style={{ marginTop: 16 }}>
           <Link to="/docs" className="btn btn-primary">Read the docs</Link>

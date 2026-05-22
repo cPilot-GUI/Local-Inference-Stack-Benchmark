@@ -28,7 +28,7 @@ export default function App() {
         <div className="header-inner">
           <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             <LoopLogo size={32} />
-            <span className="logo-text">BenchLoop</span>
+            <span className="logo-text">Local Stack Bench</span>
           </div>
           <nav className="nav">
             {navItems.map((item) => (
@@ -44,7 +44,7 @@ export default function App() {
           </nav>
           <div className="header-actions">
             <a
-              href="https://github.com/outsourc-e/bench-loop"
+              href="https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark"
               target="_blank"
               rel="noreferrer"
               className="btn btn-ghost"
@@ -74,15 +74,15 @@ export default function App() {
         <div className="site-footer-inner">
           <div>
             <LoopLogo size={22} />
-            <strong>BenchLoop</strong>
-            <span>© 2026 BenchLoop</span>
+            <strong>Local Inference Stack Benchmark</strong>
+            <span>© 2026 cPilot-GUI</span>
           </div>
           <div className="site-footer-links">
-            <a href="https://github.com/outsourc-e/bench-loop" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark" target="_blank" rel="noreferrer">GitHub</a>
             <Link to="/methodology">Methodology</Link>
             <Link to="/leaderboard">Leaderboard</Link>
             <Link to="/submit">Submit</Link>
-            <a href="mailto:hi@bench-loop.com">Contact</a>
+            <a href="https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark/issues" target="_blank" rel="noreferrer">Issues</a>
           </div>
         </div>
       </footer>

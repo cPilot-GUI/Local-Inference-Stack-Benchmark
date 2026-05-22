@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom'
 import { useLeaderboard } from '../hooks/useLeaderboard'
-import { canItRunLabel, contextLabel, engineLabel, isStackRun, machineLabel, quantLabel } from '../lib/leaderboard'
+import {
+  canItRunLabel,
+  contextLabel,
+  engineLabel,
+  isStackRun,
+  lowMemoryFrontierScore,
+  machineLabel,
+  modelDensityLabel,
+  quantLabel,
+} from '../lib/leaderboard'
 
 export default function LandingPage() {
   const { runs } = useLeaderboard()
@@ -8,6 +17,7 @@ export default function LandingPage() {
   const leaders = stackRuns.slice().sort((a, b) => b.overall_score - a.overall_score).slice(0, 5)
   const fastest = stackRuns.slice().sort((a, b) => b.generation_tok_per_sec - a.generation_tok_per_sec)[0]
   const memoryBest = stackRuns.slice().sort((a, b) => (b.memory_score || 0) - (a.memory_score || 0))[0]
+  const frontierBest = stackRuns.slice().sort((a, b) => lowMemoryFrontierScore(b) - lowMemoryFrontierScore(a))[0]
   const stableBest = stackRuns.slice().sort((a, b) => (b.stability_success_rate || 0) - (a.stability_success_rate || 0))[0]
 
   return (
@@ -16,8 +26,9 @@ export default function LandingPage() {
         <div>
           <h1>Find the best way to run open models locally.</h1>
           <p>
-            BenchLoop ranks local inference stacks: model, quantization, engine, hardware, OS,
-            and runtime config. No cloud APIs, no agent leaderboard theater, no model IQ pageant.
+            Local Inference Stack Benchmark ranks the full local setup: model, quantization,
+            engine, hardware, OS, context length, and runtime config. The goal is practical:
+            help every device find the largest useful model it can run.
           </p>
           <div className="hero-actions">
             <Link to="/leaderboard" className="btn btn-primary btn-lg">View stack leaderboard</Link>
@@ -27,7 +38,7 @@ export default function LandingPage() {
         <div className="stack-summary-panel">
           <div className="metric-label">Ranking tuple</div>
           <strong>Model × Quant × Engine × Hardware</strong>
-          <span>Speed, memory, stability, and quality retention decide the Local Inference Score.</span>
+          <span>Speed, memory, stability, quality retention, and low-memory frontier metrics stay visible for every run.</span>
           <div className="formula-grid">
             <span>35% Speed</span>
             <span>30% Memory</span>
@@ -40,6 +51,7 @@ export default function LandingPage() {
       <div className="metric-grid metric-grid-tight">
         <Highlight title="Fastest usable" run={fastest} metric={fastest ? `${fastest.generation_tok_per_sec.toFixed(1)} tok/s` : '—'} />
         <Highlight title="Most memory efficient" run={memoryBest} metric={memoryBest ? `${(memoryBest.memory_score || 0).toFixed(1)} memory` : '—'} />
+        <Highlight title="Low-memory frontier" run={frontierBest} metric={frontierBest ? modelDensityLabel(frontierBest) : '—'} />
         <Highlight title="Most stable" run={stableBest} metric={stableBest ? `${(stableBest.stability_success_rate || stableBest.reliability_score).toFixed(0)}% stable` : '—'} />
       </div>
 
@@ -87,8 +99,8 @@ export default function LandingPage() {
       </section>
 
       <section className="stack-bands">
-        <InfoBand title="Not a model IQ leaderboard" body="The same model can feel completely different across quantization, engine, hardware, OS, context length, and launch flags." />
-        <InfoBand title="Memory is a first-class score" body="Peak RAM, VRAM, KV growth, runtime overhead, OOM rate, and failed loads are shown beside raw tok/s." />
+        <InfoBand title="Full-stack, not model-only" body="The same model can feel completely different across quantization, engine, hardware, OS, context length, and launch flags." />
+        <InfoBand title="Low-memory runs matter" body="The board exposes peak RAM, peak VRAM, OOM rate, and model-density-per-GB so large-model-on-small-hardware wins are visible." />
         <InfoBand title="Built for setup decisions" body="Filter for 16GB devices, CPU-only machines, small VRAM GPUs, 30B+ local setups, and Chinese local models." />
       </section>
     </div>

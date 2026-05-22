@@ -6,9 +6,13 @@ import {
   contextLabel,
   engineLabel,
   isStackRun,
+  lowMemoryFrontierScore,
   machineLabel,
+  modelDensityLabel,
   modelSlug,
   normalizedHardwareLabel,
+  parameterBillions,
+  peakMemoryGb,
   quantLabel,
   scoreOf,
   stackTuple,
@@ -18,6 +22,7 @@ import {
 
 const RANK_MODES: { id: RankMode; label: string }[] = [
   { id: 'overall', label: 'Local Score' },
+  { id: 'frontier', label: 'Low-memory frontier' },
   { id: 'speed', label: 'Speed' },
   { id: 'memory', label: 'Memory' },
   { id: 'stability', label: 'Stability' },
@@ -30,6 +35,7 @@ const VIEW_MODES = [
   { id: '16gb', label: 'Best 16GB devices' },
   { id: 'cpu', label: 'CPU-only' },
   { id: 'small-vram', label: 'Small VRAM' },
+  { id: 'frontier', label: 'Large model / low memory' },
   { id: 'chinese', label: 'Chinese local models' },
   { id: '30b', label: '30B+ setups' },
 ] as const
@@ -76,6 +82,7 @@ export default function LeaderboardPage() {
         if (view === '16gb' && !`${run.hardware_class} ${machineLabel(run)}`.toLowerCase().includes('16gb')) return false
         if (view === 'cpu' && !`${run.hardware_class} ${machineLabel(run)}`.toLowerCase().includes('cpu')) return false
         if (view === 'small-vram' && !((run.peak_vram_gb || run.gpu_memory_gb || 0) <= 8 && (run.peak_vram_gb || run.gpu_memory_gb || 0) > 0)) return false
+        if (view === 'frontier' && !(parameterBillions(run) >= 14 && peakMemoryGb(run) > 0)) return false
         if (view === 'chinese' && !`${run.model} ${run.model_family}`.toLowerCase().match(/qwen|deepseek|yi|glm/)) return false
         if (view === '30b' && !`${run.parameter_size || ''} ${run.model}`.toLowerCase().match(/3[0-9]b|4[0-9]b|70b|72b|120b/)) return false
         return true
@@ -103,7 +110,8 @@ export default function LeaderboardPage() {
           <h1>Local Inference Stack Leaderboard</h1>
           <p>
             Rank the full local stack, not just the model: model, quantization, inference engine,
-            hardware, OS, and runtime configuration.
+            hardware, OS, context length, and runtime configuration. The low-memory frontier view
+            highlights big-model setups that stay stable on constrained devices.
           </p>
           <div className="hero-actions">
             <Link to="/submit" className="btn btn-primary">Run the benchmark</Link>
@@ -215,6 +223,7 @@ export default function LeaderboardPage() {
                 <th style={{ textAlign: 'right' }}>Decode</th>
                 <th style={{ textAlign: 'right' }}>Prefill</th>
                 <th style={{ textAlign: 'right' }}>Peak Mem</th>
+                <th style={{ textAlign: 'right' }}>B/GB</th>
                 <th style={{ textAlign: 'right' }}>Stable</th>
                 <th style={{ textAlign: 'right' }}>Quality</th>
               </tr>
@@ -247,14 +256,16 @@ export default function LeaderboardPage() {
                       <td style={{ textAlign: 'right' }} className="lb-score">{run.generation_tok_per_sec ? `${run.generation_tok_per_sec.toFixed(1)}` : '—'}</td>
                       <td style={{ textAlign: 'right' }} className="lb-score">{run.prompt_eval_tok_per_sec ? `${run.prompt_eval_tok_per_sec.toFixed(0)}` : '—'}</td>
                       <td style={{ textAlign: 'right' }} className="lb-score">{formatMem(run)}</td>
+                      <td style={{ textAlign: 'right' }} className="lb-score">{modelDensityLabel(run)}</td>
                       <td style={{ textAlign: 'right' }}><span className={`lb-score ${scoreClass(run.stability_success_rate ?? run.reliability_score)}`}>{(run.stability_success_rate ?? run.reliability_score).toFixed(0)}%</span></td>
                       <td style={{ textAlign: 'right' }}><span className={`lb-score ${scoreClass(run.quality_retention_score ?? run.quality_score)}`}>{(run.quality_retention_score ?? run.quality_score).toFixed(1)}</span></td>
                     </tr>
                     {expanded && (
                       <tr className="lb-details-row">
-                        <td colSpan={12}>
+                        <td colSpan={13}>
                           <div className="lb-details-grid">
                             <Detail label="Stack tuple" value={stackTuple(run)} />
+                            <Detail label="Low-memory frontier" value={lowMemoryFrontierScore(run).toFixed(1)} />
                             <Detail label="Run ID" value={run.run_id || run.id} mono />
                             <Detail label="Engine version" value={run.engine_version || 'not reported'} />
                             <Detail label="Provider" value={run.provider || 'not reported'} mono />

@@ -5,7 +5,7 @@ export default function SubmitPage() {
     <div className="narrow-page">
       <h1>Submit a local stack run</h1>
       <p className="page-subtitle">
-        Run BenchLoop against a local model endpoint. Completed stack benchmarks publish aggregate results to the public board unless you opt out.
+        Run the benchmark against a local model endpoint. Completed stack benchmarks can publish aggregate results to the public board unless you opt out.
       </p>
       <div className="card command-card">
         <pre>{`pipx install benchloop-cli
@@ -19,13 +19,13 @@ benchloop run \\
   --context-length 16384`}</pre>
       </div>
       <div className="stack-bands">
-        <Info title="Official seed first" body="The first public board is seeded from controlled hardware before community submissions become the main growth loop." />
-        <Info title="Stamp remote hardware" body="Use --hardware, --gpu, and --gpu-memory-gb when benchmarking through tunnels or remote endpoints." />
+        <Info title="Compare full stacks" body="Keep model, quantization, context length, output length, and concurrency aligned before comparing engines or launch flags." />
+        <Info title="Stamp remote hardware" body="Use --hardware, --gpu, --gpu-memory-gb, and --system-memory-gb when benchmarking through tunnels or remote endpoints." />
         <Info title="Opt out any time" body="Set BENCHLOOP_NO_SUBMIT=1 to keep a run local while still writing run.json under ~/.bench-loop/runs/." />
       </div>
       <div className="hero-actions">
         <Link to="/methodology" className="btn btn-secondary">Read methodology</Link>
-        <a href="https://github.com/outsourc-e/bench-loop" target="_blank" rel="noreferrer" className="btn btn-primary">GitHub</a>
+        <a href="https://github.com/cPilot-GUI/Local-Inference-Stack-Benchmark" target="_blank" rel="noreferrer" className="btn btn-primary">GitHub</a>
       </div>
     </div>
   )

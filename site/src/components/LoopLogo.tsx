@@ -4,7 +4,7 @@ interface Props {
 }
 
 /**
- * BenchLoop brand mark.
+ * Local stack benchmark brand mark.
  *
  * Uses the rendered pixel-chip PNG at /logo.png (sourced from Eric's logo
  * asset). We keep the prop API identical to the previous SVG component so
@@ -14,7 +14,7 @@ export default function LoopLogo({ size = 36, animated = false }: Props) {
   return (
     <img
       src="/logo.png"
-      alt="BenchLoop"
+      alt="Local Inference Stack Benchmark"
       width={size}
       height={size}
       className={animated ? 'loop-logo loop-logo-anim' : 'loop-logo'}

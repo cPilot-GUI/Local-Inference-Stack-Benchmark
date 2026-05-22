@@ -1,9 +1,9 @@
 {
-  "name": "benchloop-site",
+  "name": "local-inference-stack-benchmark-site",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Public Local Inference Stack Benchmark site for bench-loop.com.",
+  "description": "Public site for the Local Inference Stack Benchmark.",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5181",
     "build": "tsc -b && vite build",
