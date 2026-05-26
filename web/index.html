@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cPilot-GUI Bench MVP</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="submit-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">cPilot-GUI</p>
+            <h1>Benchmark Submit</h1>
+          </div>
+          <span class="status-pill" id="statusPill">local demo</span>
+        </div>
+
+        <label for="jsonInput">Paste ourbench JSON</label>
+        <textarea id="jsonInput" spellcheck="false" placeholder='{"model": "/path/to/model.gguf", "backend": "llama.cpp", ...}'></textarea>
+
+        <div class="actions">
+          <button id="loadSampleButton" type="button">Load sample</button>
+          <button id="submitButton" type="button">Submit</button>
+        </div>
+
+        <p class="message" id="message"></p>
+      </section>
+
+      <section class="results">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span>Submissions</span>
+            <strong id="submissionCount">0</strong>
+          </div>
+          <div class="summary-card">
+            <span>Best prefill</span>
+            <strong id="bestPrefill">-</strong>
+          </div>
+          <div class="summary-card">
+            <span>Best decode</span>
+            <strong id="bestDecode">-</strong>
+          </div>
+          <div class="summary-card">
+            <span>Backend</span>
+            <strong id="backendName">-</strong>
+          </div>
+        </div>
+
+        <div class="detail-layout">
+          <section class="block">
+            <h2>Latest Submission</h2>
+            <dl class="details" id="details"></dl>
+          </section>
+
+          <section class="block">
+            <h2>Metrics</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tokens</th>
+                    <th>Prefill t/s</th>
+                    <th>Decode t/s</th>
+                    <th>GPU mem MB</th>
+                    <th>CPU peak</th>
+                    <th>Elapsed</th>
+                  </tr>
+                </thead>
+                <tbody id="metricsBody">
+                  <tr><td colspan="6" class="empty">No submissions yet</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <section class="block">
+          <h2>Submission History</h2>
+          <div id="history" class="history empty">Submitted results will appear here.</div>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
